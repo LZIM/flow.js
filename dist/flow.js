@@ -2586,17 +2586,18 @@ var Flow =
 	        var loopTemplate = this.data(config.repeat.template);
 	        var id = this.data(config.repeat.templateId);
 	
-	        if (id) {
-	            this.nextUntil(':not([data-' + id + '])').remove();
-	        } else {
-	            id = gutils.random('repeat-');
-	            this.data(config.repeat.templateId, id);
-	        }
 	        if (!loopTemplate) {
 	            loopTemplate = this.get(0).outerHTML;
 	            this.data(config.repeat.template, loopTemplate);
 	        }
 	
+	        if (id) {
+	            this.nextUntil(':not([data-' + id + '])').remove();
+	        } else {
+	            id = gutils.random('repeat-');
+	            this.attr('data-' + config.repeat.templateId, id);
+	        }
+	  
 	        var last;
 	        var me = this;
 	        _.each(value, function (dataval, datakey) {
@@ -2607,7 +2608,7 @@ var Flow =
 	            var hasData = (dataval !== null && dataval !== undefined);
 	
 	            nodes.each(function (i, newNode) {
-	                newNode = $(newNode).removeAttr('data-f-repeat');
+	                newNode = $(newNode).removeAttr('data-f-repeat').removeAttr('data-' + config.repeat.templateId);
 	                _.each(newNode.data(), function (val, key) {
 	                    if (!last) {
 	                        me.data(key, parseUtils.toImplicitType(val));
@@ -2999,7 +3000,7 @@ var Flow =
 	
 	    var mutconfig = {
 	        attributes: true,
-	        attributeFilter: ['data-f-channel'],
+	        attributeFilter: ['data-f-channel'], //FIXME: Make this a config param
 	        childList: true,
 	        subtree: true,
 	        characterData: false

@@ -20,7 +20,7 @@ module.exports = function (target, domManager) {
             if (removed && removed.length) {
                 domManager.unbindAll(removed);
             }
-            if (mutation.attributeName === 'data-f-channel') {
+            if (mutation.attributeName === 'data-f-channel') { //FIXME: This is being called for additons too
                 domManager.unbindAll(mutation.target);
                 domManager.bindAll(mutation.target);
             }
@@ -36,6 +36,5 @@ module.exports = function (target, domManager) {
         characterData: false
     };
     observer.observe(target, mutconfig);
-    // Later, you can stop observing
     // observer.disconnect();
 };
